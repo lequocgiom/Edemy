@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ant-design/icons": "^4.6.2",
     "antd": "^4.16.5",
     "bootstrap": "^5.0.2",
     "next": "^11.0.1",
