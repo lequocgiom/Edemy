@@ -19,6 +19,7 @@ const Login = () => {
         password
       });
 
+      console.log("LOGIN RESPONSE", data);
       // toast.success("Registration successful. Please login");
       setLoading(false);
     } catch (err) {
