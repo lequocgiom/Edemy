@@ -23,10 +23,10 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
-app.use((req, res, next) => {
-  console.log("This is my own middleware");
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log("This is my own middleware");
+//   next();
+// });
 
 //route
 readdirSync("./routes").map(r => app.use("/api", require(`./routes/${r}`)));
