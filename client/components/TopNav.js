@@ -73,8 +73,10 @@ const TopNav = () => {
           icon={<CoffeeOutlined />}
           title={user?.name}
           className="float-end"
+          key="user-dropdown"
         >
           <Item
+            key="/logout"
             onClick={logout}
             icon={<LogoutOutlined />}
             className="float-end"
