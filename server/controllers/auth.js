@@ -86,3 +86,12 @@ export const currentUser = async (req, res) => {
     console.log(err);
   }
 };
+
+export const sendTestEmail = async (req, res) => {
+  try {
+    console.log("Send email using SES");
+    res.json({ ok: true });
+  } catch (err) {
+    console.log(err);
+  }
+};
