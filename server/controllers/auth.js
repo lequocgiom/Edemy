@@ -57,6 +57,7 @@ export const login = async (req, res) => {
 
     //check password
     const match = await comparePassword(password, user.password);
+    if (!match) return res.status(400).send("Wrong password");
 
     //create signed JWT
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -184,4 +185,27 @@ export const forgotPassword = async (req, res) => {
     .catch(err => {
       console.log(err);
     });
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, code, newPassword } = req.body;
+    // console.table({ email, code, newPassword });
+    const hashedPassword = await hashPassword(newPassword);
+
+    const user = User.findOneAndUpdate(
+      {
+        email,
+        passwordResetCode: code
+      },
+      {
+        password: hashedPassword,
+        passwordResetCode: ""
+      }
+    ).exec();
+    res.json({ ok: true });
+  } catch (err) {
+    console.log("err :>> ", err);
+    return res.status(400).send("Error! Try again.");
+  }
 };
