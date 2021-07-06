@@ -37,7 +37,7 @@ const TopNav = () => {
   };
 
   return (
-    <Menu mode="horizontal" selectedKeys={[current]} className="d-block">
+    <Menu mode="horizontal" selectedKeys={[current]} className="d-block mb-2">
       <Item
         key="/"
         onClick={e => setCurrent(e.key)}
@@ -68,6 +68,7 @@ const TopNav = () => {
           </Link>
         </Item>
       )}
+
       {user === null && (
         <>
           <Item
@@ -109,6 +110,18 @@ const TopNav = () => {
             </Item>
           </ItemGroup>
         </SubMenu>
+      )}
+      {user?.role?.includes("Instructor") && (
+        <Item
+          key="/instructor"
+          onClick={e => setCurrent(e.key)}
+          icon={<LoginOutlined />}
+          className="float-end"
+        >
+          <Link href="/instructor">
+            <a>Instructor</a>
+          </Link>
+        </Item>
       )}
     </Menu>
   );
