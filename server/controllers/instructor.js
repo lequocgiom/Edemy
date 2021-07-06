@@ -1,7 +1,7 @@
 import User from "../models/user";
-import stripe from "stripe";
 import queryString from "query-string";
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 export const makeInstructor = async (req, res) => {
   try {
     // 1. find user from db
@@ -17,7 +17,7 @@ export const makeInstructor = async (req, res) => {
     //   console.log('accountLink :>> ', accountLink);
 
     // 3. create account link based on account id (for FE to complete onboarding)
-    const accountLink = await stripe.accountLinks.create({
+    let accountLink = await stripe.accountLinks.create({
       account: user.stripe_account_id,
       refresh_url: process.env.STRIPE_REDIRECT_URL,
       return_url: process.env.STRIPE_REDIRECT_URL,
