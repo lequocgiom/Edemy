@@ -5,14 +5,20 @@ import { Context } from "../../context";
 
 const StripeCallback = () => {
   const {
-    state: { user }
+    state: { user },
+    dispatch
   } = useContext(Context);
 
   useEffect(() => {
     if (user) {
       axios.post("/api/get-account-status").then(res => {
-        console.log("res :>> ", res);
-        // window.location.href = "/instructor";
+        // console.log("res :>> ", res);
+        dispatch({
+          type: "LOGIN",
+          payload: res.data
+        });
+        window.localStorage.setItem("user", JSON.stringify(res.data));
+        window.location.href = "/instructor";
       });
     }
   }, [user]);
