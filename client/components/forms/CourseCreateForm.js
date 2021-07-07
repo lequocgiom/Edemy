@@ -1,13 +1,14 @@
 import React from "react";
 
-import { Select, Button } from "antd";
+import { Select, Button, Avatar } from "antd";
 const { Option } = Select;
 const CourseCreateForm = ({
   handleSubmit,
   values,
   setValues,
   handleChange,
-  handleImage
+  handleImage,
+  preview
 }) => {
   const children = [];
   for (let i = 9.99; i <= 100.99; i++) {
@@ -78,8 +79,8 @@ const CourseCreateForm = ({
         />
       </div>
 
-      <div className="form-row">
-        <div className="col">
+      <div className="form-row d-flex">
+        <div className="col" style={{ paddingRight: "12px" }}>
           <div className="form-group">
             <label className="btn btn-outline-secondary btn-block text-left">
               {values.loading ? "Uploading" : "Image Upload"}
@@ -93,6 +94,8 @@ const CourseCreateForm = ({
             </label>
           </div>
         </div>
+
+        {preview && <Avatar width={200} src={preview} />}
       </div>
 
       <div className="row">

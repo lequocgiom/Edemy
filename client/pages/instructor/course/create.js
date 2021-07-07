@@ -10,15 +10,18 @@ const CourseCreate = () => {
     uploading: false,
     paid: true,
     category: "",
-    loading: false,
-    imagePreview: ""
+    loading: false
   });
+
+  const [preview, setPreview] = useState("");
 
   const handleChange = e => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  const handleImage = () => {};
+  const handleImage = e => {
+    setPreview(window.URL.createObjectURL(e.target.files[0]));
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -32,9 +35,10 @@ const CourseCreate = () => {
         <CourseCreateForm
           handleSubmit={handleSubmit}
           handleChange={handleChange}
-          handleImage={handleChange}
+          handleImage={handleImage}
           values={values}
           setValues={setValues}
+          preview={preview}
         />
       </div>
       <pre>{JSON.stringify(values, null, 4)}</pre>
