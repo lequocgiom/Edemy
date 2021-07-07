@@ -29,7 +29,7 @@ const lessonSchema = new mongoose.Schema(
 
 const courseSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       trim: true,
       minlength: 3,
