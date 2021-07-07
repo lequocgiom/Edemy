@@ -9,6 +9,7 @@ const CourseCreate = () => {
     price: "9.99",
     uploading: false,
     paid: true,
+    category: "",
     loading: false,
     imagePreview: ""
   });

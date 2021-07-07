@@ -9,6 +9,10 @@ const CourseCreateForm = ({
   handleChange,
   handleImage
 }) => {
+  const children = [];
+  for (let i = 9.99; i <= 100.99; i++) {
+    children.push(<Option key={i.toFixed(2)}>${i.toFixed(2)}</Option>);
+  }
   return (
     <form obSubmit={handleSubmit}>
       <div className="form-group">
@@ -33,8 +37,8 @@ const CourseCreateForm = ({
         ></textarea>
       </div>
 
-      <div className="form-row">
-        <div className="col">
+      <div className="form-row d-flex">
+        <div className="col" style={{ paddingRight: "12px" }}>
           <div className="form-group">
             <Select
               style={{ width: "100%" }}
@@ -47,6 +51,31 @@ const CourseCreateForm = ({
             </Select>
           </div>
         </div>
+
+        {values.paid && (
+          <div className="form-group">
+            <Select
+              defaultValue="$9.99"
+              style={{ width: "100%" }}
+              onChange={v => setValues({ ...values, price: v })}
+              tokenSeparators={[,]}
+              size="large"
+            >
+              {children}
+            </Select>
+          </div>
+        )}
+      </div>
+
+      <div className="form-group">
+        <input
+          type="text"
+          name="category"
+          className="form-control"
+          placeholder="Category"
+          value={values.category}
+          onChange={handleChange}
+        />
       </div>
 
       <div className="form-row">
