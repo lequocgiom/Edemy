@@ -11,3 +11,8 @@
 .square {
   border-radius: 0px;
 }
+
+.form-group,
+.form-row {
+  margin-bottom: 12px;
+}
