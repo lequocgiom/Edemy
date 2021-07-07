@@ -8,14 +8,15 @@ const CourseCreateForm = ({
   setValues,
   handleChange,
   handleImage,
-  preview
+  preview,
+  uploadButtonText
 }) => {
   const children = [];
   for (let i = 9.99; i <= 100.99; i++) {
     children.push(<Option key={i.toFixed(2)}>${i.toFixed(2)}</Option>);
   }
   return (
-    <form obSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <div className="form-group">
         <input
           type="text"
@@ -83,7 +84,7 @@ const CourseCreateForm = ({
         <div className="col" style={{ paddingRight: "12px" }}>
           <div className="form-group">
             <label className="btn btn-outline-secondary btn-block text-left">
-              {values.loading ? "Uploading" : "Image Upload"}
+              {uploadButtonText}
               <input
                 type="file"
                 name="image"
