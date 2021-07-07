@@ -40,7 +40,7 @@ const CourseCreate = () => {
 
         //set image in the state
         setValues({ ...values, loading: false });
-        toast("");
+        toast("Upload image successfully!");
       } catch (err) {
         console.log(err);
         setValues({ ...values, loading: false });
