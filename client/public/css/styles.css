@@ -21,3 +21,7 @@
   width: 100%;
   text-align: left;
 }
+
+.pointer {
+  cursor: pointer;
+}

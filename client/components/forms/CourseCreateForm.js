@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Select, Button, Avatar } from "antd";
+import { Select, Button, Avatar, Badge } from "antd";
 const { Option } = Select;
 const CourseCreateForm = ({
   handleSubmit,
@@ -8,6 +8,7 @@ const CourseCreateForm = ({
   setValues,
   handleChange,
   handleImage,
+  handleImageRemove,
   preview,
   uploadButtonText
 }) => {
@@ -96,7 +97,11 @@ const CourseCreateForm = ({
           </div>
         </div>
 
-        {preview && <Avatar width={200} src={preview} />}
+        {preview && (
+          <Badge count="X" onClick={handleImageRemove} className="pointer">
+            <Avatar width={200} src={preview} />
+          </Badge>
+        )}
       </div>
 
       <div className="row">
