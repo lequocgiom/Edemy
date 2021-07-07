@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import axios from "axios";
+import router from "next/router";
+import React, { useEffect, useState } from "react";
+import Resizer from "react-image-file-resizer";
+import { toast } from "react-toastify";
 import CourseCreateForm from "../../../components/forms/CourseCreateForm";
 import InstructorRoute from "../../../components/routes/InstructorRoute";
-import Resizer from "react-image-file-resizer";
-import axios from "axios";
-import { toast } from "react-toastify";
-import router from "next/router";
 
 const CourseCreate = () => {
   const [values, setValues] = useState({
@@ -16,6 +16,14 @@ const CourseCreate = () => {
     category: "",
     loading: false
   });
+
+  useEffect(() => {
+    if (!values.paid) {
+      setValues({ ...values, price: 0 });
+    } else {
+      setValues({ ...values, price: "9.99" });
+    }
+  }, [values.paid]);
 
   const [preview, setPreview] = useState("");
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
