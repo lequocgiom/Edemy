@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import InstructorRoute from "../../components/routes/InstructorRoute";
+import { Avatar } from "antd";
+import Link from "next/link";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+
+const myStyle = { marginTop: "-10px", fontSize: "10px" };
 
 const InstructorIndex = () => {
   const [courses, setCourses] = useState([]);
@@ -15,7 +20,60 @@ const InstructorIndex = () => {
   return (
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>
-      <pre>{JSON.stringify(courses, null, 4)}</pre>
+      {/* <pre>{JSON.stringify(courses, null, 4)}</pre> */}
+      {courses?.map(course => (
+        <>
+          <div className="media pt-2 d-flex">
+            <Avatar
+              size={80}
+              src={course.image ? course.image.Location : "/course.png"}
+            />
+
+            <div className="media-body pl-2 w-100">
+              <div className="row">
+                <div className="col">
+                  <Link
+                    href={`/instructor/course/view/${course._id}`}
+                    className="pointer"
+                  >
+                    <a className="text-primary d-inline-block">
+                      <h5 className="pt-2">{course.name}</h5>
+                    </a>
+                  </Link>
+                  <p style={{ marginTop: "-10px" }}>
+                    {course.lessons.length} Lessons
+                  </p>
+
+                  {course.lessons.length < 5 ? (
+                    <p style={myStyle} className="text-warning">
+                      At least 5 lessons are required to publish a course
+                    </p>
+                  ) : course.published ? (
+                    <p style={myStyle} className="text-success">
+                      Your course is live in the marketplace
+                    </p>
+                  ) : (
+                    <p style={myStyle} className="text-success">
+                      Your course is ready to be published
+                    </p>
+                  )}
+                </div>
+                <div className="col-md-3 mt-3 text-center">
+                  {course.published ? (
+                    <div>
+                      <CheckCircleOutlined className="h5 pointer text-success" />
+                    </div>
+                  ) : (
+                    <div>
+                      <CloseCircleOutlined className="h5 pointer text-warning" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ))}
     </InstructorRoute>
   );
 };
