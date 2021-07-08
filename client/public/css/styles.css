@@ -33,3 +33,15 @@
 .w-100 {
   width: 100%;
 }
+
+.mr-2 {
+  margin-right: 12px;
+}
+
+.fd-col {
+  flex-direction: column;
+}
+
+.align-end {
+  align-items: flex-end;
+}

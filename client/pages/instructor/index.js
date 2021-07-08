@@ -5,7 +5,7 @@ import { Avatar } from "antd";
 import Link from "next/link";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 
-const myStyle = { marginTop: "-10px", fontSize: "10px" };
+export const myStyle = { marginTop: "-10px", fontSize: "10px" };
 
 const InstructorIndex = () => {
   const [courses, setCourses] = useState([]);
