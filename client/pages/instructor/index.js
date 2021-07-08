@@ -33,7 +33,7 @@ const InstructorIndex = () => {
               <div className="row">
                 <div className="col">
                   <Link
-                    href={`/instructor/course/view/${course._id}`}
+                    href={`/instructor/course/view/${course.slug}`}
                     className="pointer"
                   >
                     <a className="text-primary d-inline-block">

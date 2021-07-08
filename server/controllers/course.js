@@ -92,3 +92,14 @@ export const create = async (req, res) => {
     return res.status(400).send("Course create failed. Try again");
   }
 };
+
+export const read = async (req, res) => {
+  try {
+    const course = await Course.findOne({ slug: req.params.slug })
+      .populate("instructor", "_id name")
+      .exec();
+    res.json(course);
+  } catch (err) {
+    console.log(err);
+  }
+};
