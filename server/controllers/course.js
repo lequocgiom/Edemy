@@ -231,3 +231,11 @@ export const removeLesson = async (req, res) => {
     console.log(err);
   }
 };
+
+export const updateLesson = async (req, res) => {
+  try {
+    console.log("update lesson");
+  } catch (err) {
+    console.log(err);
+  }
+};
