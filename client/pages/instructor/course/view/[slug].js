@@ -7,6 +7,7 @@ import { myStyle } from "../..";
 import { EditOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 import AddLessonForm from "../../../../components/forms/AddLessonForm";
+import { toast } from "react-toastify";
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
@@ -18,6 +19,7 @@ const CourseView = () => {
   });
   const [uploading, setUploading] = useState(false);
   const [uploadButtonText, setUploadButtonText] = useState("Upload video");
+  const [progress, setProgress] = useState(0);
 
   const router = useRouter();
 
@@ -32,10 +34,31 @@ const CourseView = () => {
     setCourse(data);
   };
 
-  const handleVideo = e => {
-    const file = e.target.files[0];
-    setUploadButtonText(file.name);
-    console.log("handle Video Upload");
+  const handleVideo = async e => {
+    try {
+      const file = e.target.files[0];
+      setUploadButtonText(file.name);
+      setUploading(true);
+
+      const videoData = new FormData();
+      videoData.append("video", file);
+      // save progress bar and send video as form data to BE
+
+      const { data } = await axios.post("/api/course/video-upload", videoData, {
+        onUploadProgress: e => {
+          setProgress(Math.round((100 * e.loaded) / e.total));
+        }
+      });
+
+      //once response is received
+      console.log(data);
+      setValues({ ...values, video: data });
+      setUploading(false);
+    } catch (err) {
+      console.log(err);
+      setUploading(false);
+      toast("Video upload failed");
+    }
   };
 
   // functions for add lesson
@@ -59,7 +82,6 @@ const CourseView = () => {
 
               <div className="media-body w-100">
                 <div className="row">
-                  ]]]]]
                   <div className="col">
                     <h5 className="mt-2 text-primary">{course.name}</h5>
                     <p style={{ marginTop: "-10px" }}>
@@ -111,9 +133,7 @@ const CourseView = () => {
                 setValues={setValues}
                 handleAddLesson={handleAddLesson}
                 uploading={uploading}
-                setUploading={setUploading}
                 uploadButtonText={uploadButtonText}
-                setUploadButtonText={setUploadButtonText}
                 handleVideo={handleVideo}
               />
             </Modal>

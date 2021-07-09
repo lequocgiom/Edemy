@@ -32,7 +32,7 @@ const AddLessonForm = ({
           placeholder="Content"
         />
 
-        <label className="btn btn-dark btn-block text-left mt-3">
+        <label className="btn btn-dark btn-block text-left mt-3 w-100">
           {uploadButtonText}
           <input onChange={handleVideo} type="file" accept="video/*" hidden />
         </label>
