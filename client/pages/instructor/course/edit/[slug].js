@@ -7,6 +7,7 @@ import CourseCreateForm from "../../../../components/forms/CourseCreateForm";
 import InstructorRoute from "../../../../components/routes/InstructorRoute";
 import { List, Avatar, Modal } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import UpdateLessonForm from "../../../../components/forms/UpdateLessonForm";
 
 const { Item } = List;
 
@@ -25,6 +26,10 @@ const CourseEdit = () => {
   // state for update lesson
   const [visible, setVisible] = useState(false);
   const [current, setCurrent] = useState({});
+  const [uploadVideoButtonText, setUploadVideoButtonText] =
+    useState("Upload Video");
+  const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
 
   const router = useRouter();
   const { slug } = router.query;
@@ -157,6 +162,26 @@ const CourseEdit = () => {
     }
   };
 
+  // lesson update functions
+
+  const handleVideo = () => {
+    console.log("handle upload");
+  };
+
+  const handleUpdateLesson = () => {
+    console.log("handle update lesson");
+  };
+
+  const propsModalUpdateLesson = {
+    current,
+    setCurrent,
+    handleVideo,
+    handleUpdateLesson,
+    uploadVideoButtonText,
+    progress,
+    uploading
+  };
+
   return (
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Update Course</h1>
@@ -219,8 +244,8 @@ const CourseEdit = () => {
         onCancel={() => setVisible(false)}
         footer={null}
       >
-        update lesson form
-        <pre>{JSON.stringify(current, null, 4)}</pre>
+        <UpdateLessonForm {...propsModalUpdateLesson} />
+        {/* <pre>{JSON.stringify(current, null, 4)}</pre> */}
       </Modal>
     </InstructorRoute>
   );
