@@ -45,3 +45,7 @@
 .align-end {
   align-items: flex-end;
 }
+
+.pl-8px {
+  padding-left: 8px;
+}

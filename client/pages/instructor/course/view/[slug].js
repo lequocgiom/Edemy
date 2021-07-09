@@ -61,6 +61,10 @@ const CourseView = () => {
     }
   };
 
+  const handleVideoRemove = async e => {
+    console.log("handle video remove");
+  };
+
   // functions for add lesson
   const handleAddLesson = e => {
     e.preventDefault();
@@ -135,6 +139,8 @@ const CourseView = () => {
                 uploading={uploading}
                 uploadButtonText={uploadButtonText}
                 handleVideo={handleVideo}
+                progress={progress}
+                handleVideoRemove={handleVideoRemove}
               />
             </Modal>
           </div>
