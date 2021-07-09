@@ -5,7 +5,8 @@ import {
   removeImage,
   create,
   read,
-  uploadVideo
+  uploadVideo,
+  removeVideo
 } from "../controllers/course";
 import { isInstructor, requireSignin } from "../middlewares";
 
@@ -23,5 +24,6 @@ router.post(
   formidable({ maxFileSize: 1000 * 1024 * 1024 }),
   uploadVideo
 );
+router.post("/course/video-remove", requireSignin, removeVideo);
 
 module.exports = router;

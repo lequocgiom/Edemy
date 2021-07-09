@@ -15,7 +15,7 @@ const CourseView = () => {
   const [values, setValues] = useState({
     title: "",
     content: "",
-    video: ""
+    video: {}
   });
   const [uploading, setUploading] = useState(false);
   const [uploadButtonText, setUploadButtonText] = useState("Upload video");
@@ -61,8 +61,23 @@ const CourseView = () => {
     }
   };
 
-  const handleVideoRemove = async e => {
-    console.log("handle video remove");
+  const handleVideoRemove = async () => {
+    try {
+      setUploading(true);
+      const { data } = await axios.post(
+        "/api/course/video-remove",
+        values.video
+      );
+      console.log(data);
+      setValues({ ...values, video: {} });
+      setProgress(0);
+      setUploading(false);
+      setUploadButtonText("Upload another video");
+    } catch (err) {
+      console.log(err);
+      setUploading(false);
+      toast("Video remove failed");
+    }
   };
 
   // functions for add lesson
