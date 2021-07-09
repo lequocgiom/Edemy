@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import InstructorRoute from "../../../../components/routes/InstructorRoute";
 import axios from "axios";
-import { Avatar, Tooltip } from "antd";
+import { Avatar, Tooltip, Button, Modal } from "antd";
 import { myStyle } from "../..";
-import { EditOutlined, CheckOutlined } from "@ant-design/icons";
+import { EditOutlined, CheckOutlined, UploadOutlined } from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
-
+  const [visible, setVisible] = useState(false);
   const router = useRouter();
 
   const { slug } = router.query;
@@ -38,6 +38,7 @@ const CourseView = () => {
 
               <div className="media-body w-100">
                 <div className="row">
+                  ]]]]]
                   <div className="col">
                     <h5 className="mt-2 text-primary">{course.name}</h5>
                     <p style={{ marginTop: "-10px" }}>
@@ -64,6 +65,28 @@ const CourseView = () => {
                 <ReactMarkdown source={course.description} />
               </div>
             </div>
+            <div className="row">
+              <Button
+                onClick={() => setVisible(true)}
+                className="col-md-6 offset-md-3 text-center"
+                type="primary"
+                shape="round"
+                icon={<UploadOutlined />}
+                size="large"
+              >
+                Add lesson
+              </Button>
+            </div>
+            <br />
+            <Modal
+              title="+ Add Lesson"
+              centered
+              visible={visible}
+              onCancel={() => setVisible(false)}
+              footer={null}
+            >
+              show add lesson component
+            </Modal>
           </div>
         )}
       </div>
