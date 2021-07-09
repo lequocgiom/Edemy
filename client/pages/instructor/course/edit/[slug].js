@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "next/router";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
@@ -17,15 +17,16 @@ const CourseEdit = () => {
     loading: false
   });
 
+  const router = useRouter();
   const { slug } = router.query;
 
   useEffect(() => {
-    if (!values.paid) {
+    if (!values?.paid) {
       setValues({ ...values, price: 0 });
     } else {
       setValues({ ...values, price: "9.99" });
     }
-  }, [values.paid]);
+  }, [values?.paid]);
 
   useEffect(() => {
     loadCourse();
@@ -70,32 +71,16 @@ const CourseEdit = () => {
     });
   };
 
-  const handleImageRemove = async e => {
-    try {
-      setValues({ ...values, loading: true });
-      console.log("REMOVE IMAGE");
-      const res = await axios.post("/api/course/remove-image", { image });
-      setImage({});
-      setPreview("");
-      setUploadButtonText("Upload Image");
-      setValues({ ...values, loading: false });
-    } catch (err) {
-      console.log(err);
-      setValues({ ...values, loading: false });
-      toast("Image upload failed. Try later.");
-    }
-  };
-
   const handleSubmit = async e => {
     e.preventDefault();
     // console.log(values);
     try {
-      const { data } = await axios.post("/api/course", {
+      const { data } = await axios.put("/api/course", {
         ...values,
         image
       });
-      toast("Great! Now you can start adding lessons");
-      router.push("/instructor");
+      toast("Course updated!");
+      //   router.push("/instructor");
     } catch (err) {
       console.log(err);
       toast(err.response.data);
@@ -111,11 +96,11 @@ const CourseEdit = () => {
           handleSubmit={handleSubmit}
           handleChange={handleChange}
           handleImage={handleImage}
-          handleImageRemove={handleImageRemove}
           values={values}
           setValues={setValues}
           preview={preview}
           uploadButtonText={uploadButtonText}
+          editPage={true}
         />
       </div>
       {/* <pre>{JSON.stringify(values, null, 4)}</pre>
