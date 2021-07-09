@@ -17,6 +17,7 @@ const CourseView = () => {
     video: ""
   });
   const [uploading, setUploading] = useState(false);
+  const [uploadButtonText, setUploadButtonText] = useState("Upload video");
 
   const router = useRouter();
 
@@ -29,6 +30,12 @@ const CourseView = () => {
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`);
     setCourse(data);
+  };
+
+  const handleVideo = e => {
+    const file = e.target.files[0];
+    setUploadButtonText(file.name);
+    console.log("handle Video Upload");
   };
 
   // functions for add lesson
@@ -105,6 +112,9 @@ const CourseView = () => {
                 handleAddLesson={handleAddLesson}
                 uploading={uploading}
                 setUploading={setUploading}
+                uploadButtonText={uploadButtonText}
+                setUploadButtonText={setUploadButtonText}
+                handleVideo={handleVideo}
               />
             </Modal>
           </div>
