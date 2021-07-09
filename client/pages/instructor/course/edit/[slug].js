@@ -5,7 +5,7 @@ import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 import CourseCreateForm from "../../../../components/forms/CourseCreateForm";
 import InstructorRoute from "../../../../components/routes/InstructorRoute";
-import { List, Avatar } from "antd";
+import { List, Avatar, Modal } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 const { Item } = List;
@@ -21,6 +21,10 @@ const CourseEdit = () => {
     loading: false,
     lessons: []
   });
+
+  // state for update lesson
+  const [visible, setVisible] = useState(false);
+  const [current, setCurrent] = useState({});
 
   const router = useRouter();
   const { slug } = router.query;
@@ -187,8 +191,13 @@ const CourseEdit = () => {
                 draggable
                 onDragStart={e => handleDrag(e, index)}
                 onDrop={e => handleDrop(e, index)}
+                className="pointer"
               >
                 <Item.Meta
+                  onClick={() => {
+                    setVisible(true);
+                    setCurrent(item);
+                  }}
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
                 ></Item.Meta>
@@ -202,6 +211,17 @@ const CourseEdit = () => {
           ></List>
         </div>
       </div>
+
+      <Modal
+        title="Update lesson"
+        centered
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+      >
+        update lesson form
+        <pre>{JSON.stringify(current, null, 4)}</pre>
+      </Modal>
     </InstructorRoute>
   );
 };
