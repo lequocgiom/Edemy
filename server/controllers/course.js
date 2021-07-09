@@ -2,6 +2,7 @@ import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
 import Course from "../models/course";
 import slugify from "slugify";
+import { readFileSync } from "fs";
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -101,5 +102,34 @@ export const read = async (req, res) => {
     res.json(course);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const uploadVideo = async (req, res) => {
+  try {
+    const { video } = req.files;
+    // console.log("wdwdw", video);
+    if (!video) return res.status(400).send("No video");
+
+    // video params
+    const params = {
+      Bucket: "trungle-edemy-bucket",
+      Key: `${nanoid()}.${video.type.split("/")[1]}`,
+      Body: readFileSync(video.path),
+      ACL: "public-read",
+      ContentType: video.type
+    };
+
+    //upload to s3
+    S3.upload(params, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(400);
+      }
+      // console.log(data);
+      res.send(data);
+    });
+  } catch (err) {
+    console.log("upload video", err);
   }
 };
