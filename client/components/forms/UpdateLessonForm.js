@@ -18,7 +18,7 @@ const UpdateLessonForm = ({
         <input
           type="text"
           className="form-control square"
-          onChange={e => setValues({ ...current, title: e.target.value })}
+          onChange={e => setCurrent({ ...current, title: e.target.value })}
           value={current.title}
           placeholder="Title"
           autoFocus
@@ -29,7 +29,7 @@ const UpdateLessonForm = ({
           rows="7"
           type="text"
           className="form-control mt-3"
-          onChange={e => setValues({ ...current, content: e.target.value })}
+          onChange={e => setCurrent({ ...current, content: e.target.value })}
           value={current.content}
           placeholder="Content"
         />

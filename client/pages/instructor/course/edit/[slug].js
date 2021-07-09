@@ -206,8 +206,15 @@ const CourseEdit = () => {
     );
     setUploadVideoButtonText("Upload video");
     setVisible(false);
-    toast("Lesson updated");
-    setCourse(data);
+
+    //update UI
+    if (data.ok) {
+      let arr = values.lessons;
+      const index = arr.findIndex(el => el._id === current._id);
+      arr[index] = current;
+      setValues({ ...values, lessons: arr });
+      toast("Lesson updated");
+    }
   };
 
   const propsModalUpdateLesson = {
