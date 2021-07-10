@@ -43,7 +43,9 @@ const CourseEdit = () => {
   }, [values?.paid]);
 
   useEffect(() => {
-    loadCourse();
+    if (slug) {
+      loadCourse();
+    }
   }, [slug]);
 
   const loadCourse = async () => {
@@ -205,6 +207,7 @@ const CourseEdit = () => {
       current
     );
     setUploadVideoButtonText("Upload video");
+    setProgress(0);
     setVisible(false);
 
     //update UI

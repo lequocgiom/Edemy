@@ -245,7 +245,7 @@ export const updateLesson = async (req, res) => {
     }
 
     const updated = await Course.updateOne(
-      { "lesson._id": _id },
+      { "lessons._id": _id },
       {
         $set: {
           "lessons.$.title": title,

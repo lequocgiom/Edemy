@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import axiso from "axios";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { Badge } from "antd";
+import { Badge, Modal } from "antd";
 import { currencyFormatter } from "../../utils/helpers";
+import ReactPlayer from "react-player";
 
 const SingleCourse = ({ course }) => {
   const router = useRouter();
   const { slug } = router.query;
+
+  const [showModal, setShowModal] = useState(false);
+  const [preview, setPreview] = useState("");
 
   const {
     name,
@@ -45,10 +49,35 @@ const SingleCourse = ({ course }) => {
             </h4>
           </div>
           <div className="col-md-4">
-            <p>show course image</p>
+            {lessons[0].video && lessons[0].video.Location ? (
+              <div
+                onClick={() => {
+                  setPreview(lessons[0].video.Location);
+                  setShowModal(!showModal);
+                }}
+              >
+                <ReactPlayer
+                  className="react-player-div"
+                  url={lessons[0].video.Location}
+                  light={image.Location}
+                  width="100%"
+                  height="225px"
+                />
+              </div>
+            ) : (
+              <>
+                <img
+                  src={image.Location}
+                  alt={name}
+                  className="img img-fluid"
+                />
+              </>
+            )}
           </div>
         </div>
       </div>
+
+      {showModal ? course.lessons[0].video.Location : "dont show"}
     </>
   );
 };
