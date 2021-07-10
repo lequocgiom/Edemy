@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import CourseCard from "../components/cards/CourseCard";
 
 const Index = () => {
   const [courses, setCourses] = useState([]);
@@ -20,7 +21,8 @@ const Index = () => {
         <div className="row">
           {courses.map(course => (
             <div key={course._id} className="col-md-4">
-              <pre>{JSON.stringify(course, null, 4)}</pre>
+              {/* <pre>{JSON.stringify(course, null, 4)}</pre> */}
+              <CourseCard course={course} />
             </div>
           ))}
         </div>
