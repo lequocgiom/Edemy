@@ -10,7 +10,9 @@ import {
   removeVideo,
   addLesson,
   updateLesson,
-  removeLesson
+  removeLesson,
+  publishCourse,
+  unpublishCourse
 } from "../controllers/course";
 import { isInstructor, requireSignin } from "../middlewares";
 
@@ -30,7 +32,14 @@ router.post(
   uploadVideo
 );
 router.post("/course/video-remove/:instructorId", requireSignin, removeVideo);
+
+//publish unpublish
+router.put("/course/publish/:courseId", requireSignin, publishCourse);
+router.put("/course/unpublish/:courseId", requireSignin, unpublishCourse);
+
+// lessons
 router.post("/course/lesson/:slug/:instructorId", requireSignin, addLesson);
 router.put("/course/lesson/:slug/:instructorId", requireSignin, updateLesson);
 router.put("/course/:slug/:lessonId", requireSignin, removeLesson);
+
 module.exports = router;
