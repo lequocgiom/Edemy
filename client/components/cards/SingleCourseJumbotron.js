@@ -50,7 +50,9 @@ const SingleCourseJumbotron = ({
           </h4>
         </div>
         <div className="col-md-4">
-          {lessons[0].video && lessons[0].video.Location ? (
+          {lessons[0].video &&
+          lessons[0].free_preview &&
+          lessons[0].video.Location ? (
             <div
               onClick={() => {
                 setPreview(lessons[0].video.Location);
@@ -67,7 +69,11 @@ const SingleCourseJumbotron = ({
             </div>
           ) : (
             <>
-              <img src={image.Location} alt={name} className="img img-fluid" />
+              <img
+                src={image.Location ? image.Location : "/course.png"}
+                alt={name}
+                className="img img-fluid"
+              />
             </>
           )}
         </div>

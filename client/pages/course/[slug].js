@@ -2,6 +2,8 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import SingleCourseJumbotron from "../../components/cards/SingleCourseJumbotron";
+import SingleCourseLesson from "../../components/cards/SingleCourseLesson";
+import PreviewModal from "../../components/modal/PreviewModal";
 
 const SingleCourse = ({ course }) => {
   const router = useRouter();
@@ -19,7 +21,20 @@ const SingleCourse = ({ course }) => {
         preview={preview}
         setPreview={setPreview}
       />
-      {showModal ? course.lessons[0].video.Location : "dont show"}
+      <PreviewModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        preview={preview}
+      />
+
+      {course.lessons && (
+        <SingleCourseLesson
+          lessons={course.lessons}
+          setPreview={setPreview}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };
