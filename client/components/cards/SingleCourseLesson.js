@@ -21,7 +21,18 @@ const SingleCourseLesson = ({
                 <Item.Meta
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
-                ></Item.Meta>
+                />
+                {item?.video !== null && item.free_preview && (
+                  <span
+                    className="text-primary pointer"
+                    onClick={() => {
+                      setPreview(item.video.Location);
+                      setShowModal(!showModal);
+                    }}
+                  >
+                    Preview
+                  </span>
+                )}
               </Item>
             )}
           />
