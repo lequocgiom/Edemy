@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import Course from "../models/course";
 import slugify from "slugify";
 import { readFileSync } from "fs";
+import User from "../models/user";
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -322,11 +323,13 @@ export const courses = async (req, res) => {
 export const checkEnrollment = async (req, res) => {
   const { courseId } = req.params;
 
-  const user = await user.findById(req.user._id).exec();
+  const user = await User.findById(req.user._id).exec();
 
   let ids = [];
 
-  for (let i = 0; i < user.courses.length; i++) {
+  let length = user.courses && user.courses.length;
+
+  for (let i = 0; i < length; i++) {
     ids.push(user.courses[i].toString());
   }
 
