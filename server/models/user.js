@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+const { ObjectId } = Schema;
 
 const userSchema = new Schema(
   {
@@ -35,7 +36,8 @@ const userSchema = new Schema(
     passwordResetCode: {
       data: String,
       default: ""
-    }
+    },
+    courses: [{ type: ObjectId, ref: "Course" }]
   },
 
   { timestamps: true }

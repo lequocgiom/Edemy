@@ -32,8 +32,18 @@ const SingleCourse = ({ course }) => {
     console.log("paid enrollment");
   };
 
-  const handleFreeEnrollment = () => {
-    console.log("free enrollment");
+  const handleFreeEnrollment = e => {
+    // console.log("free enrollment");
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const { data } = await axios.post(`/api/free-enrollment/${course._id}`);
+      toast(data.message);
+    } catch (err) {
+      toast("Enrollment failed. Try again.");
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   return (
