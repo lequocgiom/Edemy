@@ -368,16 +368,17 @@ export const paidEnrollment = async (req, res) => {
   try {
     // check if course is free or paid
     const course = await Course.findById(req.params.courseId)
-      .populate("intructor")
+      .populate("instructor")
       .exec();
     if (!course.paid) return;
+    // console.log("course :>> ", course);
 
     // application fee 30%
     const fee = (course.price * 30) / 100;
 
     //create stripe session
-    const session = await stripe.checkout.session.create({
-      payment_method_types: ["cards"],
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
       //purchase details
       line_items: [
         {
@@ -399,7 +400,7 @@ export const paidEnrollment = async (req, res) => {
       cancel_url: `${process.env.STRIPE_CANCEL_URL}`
     });
 
-    console.log("stripe session", session);
+    // console.log("stripe session", session);
 
     await User.findByIdAndUpdate(req.user._id, {
       stripeSession: session

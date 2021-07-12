@@ -6,6 +6,7 @@ import SingleCourseLesson from "../../components/cards/SingleCourseLesson";
 import PreviewModal from "../../components/modal/PreviewModal";
 import { Context } from "../../context";
 import { toast } from "react-toastify";
+import { loadStripe } from "@stripe/stripe-js";
 
 const SingleCourse = ({ course }) => {
   const router = useRouter();
@@ -31,8 +32,24 @@ const SingleCourse = ({ course }) => {
     setEnrolled(data);
   };
 
-  const handlePaidEnrollment = () => {
+  const handlePaidEnrollment = async e => {
     console.log("paid enrollment");
+    try {
+      setLoading(true);
+      if (!user) router.push("/login");
+
+      //check if already enrolled
+      if (enrolled.status)
+        return router.push(`/user/course/${enrolled.course.slug}`);
+
+      const { data } = await axios.post(`/api/paid-enrollment/${course._id}`);
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+      stripe.redirectToCheckout({ sessionId: data });
+    } catch (err) {
+      toast("Enrollment failed. Try again.");
+      console.log(err);
+      setLoading(false);
+    }
   };
 
   const handleFreeEnrollment = async e => {
