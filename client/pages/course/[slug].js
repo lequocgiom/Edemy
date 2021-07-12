@@ -5,6 +5,8 @@ import SingleCourseJumbotron from "../../components/cards/SingleCourseJumbotron"
 import SingleCourseLesson from "../../components/cards/SingleCourseLesson";
 import PreviewModal from "../../components/modal/PreviewModal";
 import { Context } from "../../context";
+import { toast } from "react-toastify";
+
 const SingleCourse = ({ course }) => {
   const router = useRouter();
   const { slug } = router.query;
@@ -19,8 +21,9 @@ const SingleCourse = ({ course }) => {
   } = useContext(Context);
 
   useEffect(() => {
+    console.log("user, course :>> ", user, course);
     if (user && course) checkErollment();
-  }, []);
+  }, [user]);
 
   const checkErollment = async () => {
     const { data } = await axios.get(`/api/check-enrollment/${course._id}`);
@@ -32,13 +35,22 @@ const SingleCourse = ({ course }) => {
     console.log("paid enrollment");
   };
 
-  const handleFreeEnrollment = e => {
+  const handleFreeEnrollment = async e => {
     // console.log("free enrollment");
     e.preventDefault();
     try {
+      // check if user is logged in
+      if (!user) router.push("/login");
+
+      //check if already enrolled
+      if (enrolled.status)
+        return router.push(`/user/course/${enrolled.course.slug}`);
+
       setLoading(true);
       const { data } = await axios.post(`/api/free-enrollment/${course._id}`);
       toast(data.message);
+      setLoading(false);
+      router.push(`/user/course/${data.course.slug}`);
     } catch (err) {
       toast("Enrollment failed. Try again.");
       console.log(err);
@@ -81,6 +93,7 @@ const SingleCourse = ({ course }) => {
 
 export async function getServerSideProps(context) {
   const { slug } = context.query;
+  console.log("context", context);
   const { data } = await axios.get(`${process.env.API}/course/${slug}`);
   return {
     props: {

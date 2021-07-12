@@ -92,7 +92,7 @@ const SingleCourseJumbotron = ({
           ) : (
             <div>
               <Button
-                className="mb-3 mt-3"
+                className="mb-3 mt-3 d-flex justify-content-center align-items-center"
                 type="danger"
                 block
                 shape="round"

@@ -352,9 +352,9 @@ export const freeEnrollment = async (req, res) => {
       },
       { new: true }
     ).exec();
-    re.json({
+    res.json({
       message: "Congratulations! You have successfully enrolled",
-      course: result
+      course: course
     });
   } catch (err) {
     console.log("free enrollment err", err);
