@@ -5,6 +5,8 @@ import slugify from "slugify";
 import { readFileSync } from "fs";
 import User from "../models/user";
 
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
+
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_KEY,
@@ -365,22 +367,47 @@ export const freeEnrollment = async (req, res) => {
 export const paidEnrollment = async (req, res) => {
   try {
     // check if course is free or paid
-    const course = await Course.findById(req.params.courseId).exec();
-    if (course.paid) return;
+    const course = await Course.findById(req.params.courseId)
+      .populate("intructor")
+      .exec();
+    if (!course.paid) return;
 
-    const result = await User.findByIdAndUpdate(
-      req.user._id,
-      {
-        $addToSet: { courses: course._id }
+    // application fee 30%
+    const fee = (course.price * 30) / 100;
+
+    //create stripe session
+    const session = await stripe.checkout.session.create({
+      payment_method_types: ["cards"],
+      //purchase details
+      line_items: [
+        {
+          name: course.name,
+          amount: Math.round(course.price.toFixed(2) * 100),
+          currency: "usd",
+          quantity: 1
+        }
+      ],
+      //charge buyer and transfer remaining balance to seller (after fee)
+      payment_intent_data: {
+        application_fee_amount: Math.round(fee.toFixed(2) * 100),
+        transfer_data: {
+          destination: course.instructor.stripe_account_id
+        }
       },
-      { new: true }
-    ).exec();
-    res.json({
-      message: "Congratulations! You have successfully enrolled",
-      course: course
+      // redirect url after successful payment
+      success_url: `${process.env.STRIPE_SUCCESS_URL}/${course._id}`,
+      cancel_url: `${process.env.STRIPE_CANCEL_URL}`
     });
+
+    console.log("stripe session", session);
+
+    await User.findByIdAndUpdate(req.user._id, {
+      stripeSession: session
+    }).exec();
+
+    res.send(session.id);
   } catch (err) {
-    console.log("free enrollment err", err);
+    console.log("paid enrollment err", err);
     return res.status(400).send("Enrollment create failed.");
   }
 };
