@@ -17,7 +17,7 @@ const Index = ({ courses }) => {
       <h1 className="jumbotron text-center bg-primary square">
         Online Education Marketplace
       </h1>
-      <div className="container-fluiod">
+      <div className="container-fluid">
         <div className="row">
           {courses.map(course => (
             <div key={course._id} className="col-md-4">
