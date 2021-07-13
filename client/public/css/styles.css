@@ -36,8 +36,12 @@
   padding-left: 12px;
 }
 
-.w-100 {
+.width-100 {
   width: 100%;
+}
+
+.width-80px {
+  width: 80px;
 }
 
 .mr-2 {

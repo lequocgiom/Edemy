@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createElement } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import StudentRoute from "../../../components/routes/StudentRoute";
 import { Button, Menu, Avatar } from "antd";
+import ReactPlayer from "react-player";
+import ReactMarkdown from "react-markdown";
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  PlayCircleOutlined
+} from "@ant-design/icons";
 
 const { Item } = Menu;
 
@@ -35,6 +42,15 @@ const SingleCourse = () => {
       <StudentRoute>
         <div className="row flex-1">
           <div className="" style={{ maxWidth: 320 }}>
+            <Button
+              className={`text-primary mt-1 btn-block mb-2 d-flex justify-content-center align-items-center ${
+                !collapse ? "width-100" : "width-80px"
+              }`}
+              onClick={() => setCollapse(!collapse)}
+            >
+              {createElement(collapse ? MenuUnfoldOutlined : MenuFoldOutlined)}{" "}
+              {!collapse && "Lessons"}
+            </Button>
             <Menu
               defaultSelectedKeys={[clicked]}
               inlineCollapsed={collapse}
@@ -53,9 +69,33 @@ const SingleCourse = () => {
           </div>
           <div className="col">
             {clicked !== -1 ? (
-              <>{JSON.stringify(course.lessons[clicked])}</>
+              <>
+                {course.lessons[clicked].video &&
+                  course.lessons[clicked].video.Location && (
+                    <>
+                      <div className="wrapper">
+                        <ReactPlayer
+                          className="player"
+                          url={course.lessons[clicked].video.Location}
+                          width="100%"
+                          height="100%"
+                          controls
+                        />
+                      </div>
+                    </>
+                  )}
+                <ReactMarkdown
+                  source={course.lessons[clicked].content}
+                  className="single-post"
+                />
+              </>
             ) : (
-              <>Click on the lesson to start learning</>
+              <div className="d-flex justify-content-center p-5">
+                <div className="text-center p-5">
+                  <PlayCircleOutlined className="text-primary display-1 p-5" />
+                  <p className="lead">Click on the lessons to start learning</p>
+                </div>
+              </div>
             )}
           </div>
         </div>
