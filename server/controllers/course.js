@@ -4,6 +4,7 @@ import Course from "../models/course";
 import slugify from "slugify";
 import { readFileSync } from "fs";
 import User from "../models/user";
+import Completed from "../models/completed";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
@@ -450,6 +451,42 @@ export const userCourses = async (req, res) => {
       .populate("instructor", "_id name")
       .exec();
     res.json(courses);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const markCompleted = async (req, res) => {
+  try {
+    const { courseId, lessonId } = req.body;
+    // console.log(courseId, lessonId);
+    const existing = await Completed.findOne({
+      user: req.user._id,
+      course: courseId
+    }).exec();
+
+    if (existing) {
+      const updated = await Completed.findOneAndUpdate(
+        {
+          user: req.user._id,
+          course: courseId
+        },
+        {
+          $addToSet: {
+            lessons: lessonId
+          }
+        }
+      ).exec();
+      res.json({ ok: true });
+    } else {
+      //create
+      const created = await new Completed({
+        user: req.user._id,
+        course: courseId,
+        lessons: lessonId
+      }).save();
+      res.json({ ok: true });
+    }
   } catch (err) {
     console.log(err);
   }
