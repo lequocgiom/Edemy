@@ -19,7 +19,8 @@ import {
   paidEnrollment,
   stripeSuccess,
   userCourses,
-  markCompleted
+  markCompleted,
+  listCompleted
 } from "../controllers/course";
 import { isEnrolled, isInstructor, requireSignin } from "../middlewares";
 
@@ -65,5 +66,6 @@ router.get("/user/course/:slug", requireSignin, isEnrolled, read);
 
 // mark completed
 router.post("/mark-completed", requireSignin, markCompleted);
+router.post("/list-completed", requireSignin, listCompleted);
 
 module.exports = router;
