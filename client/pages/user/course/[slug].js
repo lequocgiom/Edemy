@@ -55,21 +55,36 @@ const SingleCourse = () => {
   };
 
   const markCompleted = async () => {
-    const { data } = await axios.post(`/api/mark-completed`, {
-      courseId: course._id,
-      lessonId: course.lessons[clicked]._id
-    });
+    try {
+      const { data } = await axios.post(`/api/mark-completed`, {
+        courseId: course._id,
+        lessonId: course.lessons[clicked]._id
+      });
 
-    console.log(data);
+      console.log(data);
+      setCompletedLessons([...completedLessons, course.lessons[clicked]._id]);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const markIncompleted = async () => {
-    const { data } = await axios.post(`/api/mark-incompleted`, {
-      courseId: course._id,
-      lessonId: course.lessons[clicked]._id
-    });
+    try {
+      const { data } = await axios.post(`/api/mark-incompleted`, {
+        courseId: course._id,
+        lessonId: course.lessons[clicked]._id
+      });
 
-    console.log(data);
+      console.log(data);
+      const all = [...completedLessons];
+      const index = all.indexOf(course.lessons[clicked]._id);
+      if (index > -1) {
+        all.splice(index, 1);
+        setCompletedLessons(all);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -141,6 +156,7 @@ const SingleCourse = () => {
                           width="100%"
                           height="100%"
                           controls
+                          onEnded={markCompleted}
                         />
                       </div>
                     </>

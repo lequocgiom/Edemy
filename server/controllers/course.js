@@ -504,3 +504,24 @@ export const listCompleted = async (req, res) => {
     console.log(err);
   }
 };
+
+export const markIncompleted = async (req, res) => {
+  try {
+    const { courseId, lessonId } = req.body;
+
+    console.log("mark incompleted body", courseId, lessonId);
+
+    const updated = await Completed.findOneAndUpdate(
+      {
+        user: req.user._id,
+        course: courseId
+      },
+      {
+        $pull: { lessons: lessonId }
+      }
+    ).exec();
+    res.json({ ok: true });
+  } catch (err) {
+    console.log("err mark incompleted", err);
+  }
+};
