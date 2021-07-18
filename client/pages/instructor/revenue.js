@@ -3,6 +3,7 @@ import axios from "axios";
 import { Context } from "../../context";
 import InstructorRoute from "../../components/routes/InstructorRoute";
 import { DollarOutlined, SettingOutlined } from "@ant-design/icons";
+import { stripeCurrencyFormatter } from "../../utils/helpers";
 const InstructorRevenue = () => {
   const [balance, setBalance] = useState({ pending: [] });
 
@@ -12,6 +13,8 @@ const InstructorRevenue = () => {
 
   const sendBalanceRequest = async () => {
     console.log("send balance request");
+    const { data } = await axios.get("/api/instructor/balance");
+    setBalance(data);
   };
 
   const handlePayoutSettings = async () => {
@@ -32,10 +35,18 @@ const InstructorRevenue = () => {
             </small>
             <hr />
             <h4>
-              Pending balance <span className="float-end">$0.00</span>
+              Pending balance{" "}
+              <span className="float-end">
+                {balance.pending?.map((bp, i) => (
+                  <span key={i} className="float-end">
+                    {stripeCurrencyFormatter(bp)}
+                  </span>
+                ))}{" "}
+              </span>
             </h4>
-            <small>For 48 hours</small>
+            <small>For last 48 hours</small>
             <hr />
+            {/* {JSON.stringify(balance, null, 4)} */}
             <h4>
               Payouts{" "}
               <SettingOutlined

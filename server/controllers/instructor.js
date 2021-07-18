@@ -3,6 +3,7 @@ import Course from "../models/course";
 import queryString from "query-string";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
+
 export const makeInstructor = async (req, res) => {
   try {
     // 1. find user from db
@@ -96,6 +97,18 @@ export const studentCount = async (req, res) => {
       .select("_id")
       .exec();
     res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const instructorBalance = async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id).exec();
+    const balance = await stripe.balance.retrieve({
+      stripeAccount: user.stripe_account_id
+    });
+    res.json(balance);
   } catch (err) {
     console.log(err);
   }
