@@ -113,3 +113,16 @@ export const instructorBalance = async (req, res) => {
     console.log(err);
   }
 };
+
+export const instructorPayoutSettings = async (req, res) => {
+  try {
+    let user = await User.findById(req.user._id).exec();
+    const loginLink = await stripe.accounts.createLoginLink(
+      user.stripe_seller.id,
+      { redirect_url: process.env.STRIPE_SETTINGS_REDIRECT }
+    );
+    res.json(loginLink.url);
+  } catch (err) {
+    console.log(err);
+  }
+};
