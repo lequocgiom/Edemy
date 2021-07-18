@@ -67,3 +67,7 @@
 .h-100 {
   height: 100%;
 }
+
+.child-mr-1 span:not(:last-child) {
+  margin-right: 12px;
+}
